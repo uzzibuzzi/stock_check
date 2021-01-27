@@ -37,12 +37,11 @@ my.add_Limit("BAYER AG NA O.N", 50)
 
 print(my.get_this("Limit"))
 
-
-
-
 my.save("myStockLimits.csv")
 
 myy=myOrders("TUI AG BZR",pd.read_csv("abc.csv"))
 
 print(my.get_all())
+
+
 

@@ -53,13 +53,22 @@ def get_limits(tickerName,allStockLimits):
     cleanedList = [x for x in ListOfLimits[0] if x > 0]
     return cleanedList
 
+def get_my_list():
+    try:
+        retunList=pd.read_csv=("stock_check//myChecklist.txt")
+    except:    
+        watchlist=["TMV.DE","AAPL","HEIA.AS","SHL.DE","VOS.DE","GE","SKT","JNJ","AVGO","SW1.F","SLT.DE","ASL.de"]
+        mySupervisionList=["2338.HK","AAG.DE","BIDU","BMW.DE","BAYN.DE","COK.DE","CSCO","EVD.DE","FEV.DE","HAG.F","IRBT","JD","MTX.DE","N7G.DE","PRLB","SHL.DE","SIX2.DE","SLM","TCOM","TUI1.DE","VOW3.DE"]
+        retunList=watchlist+mySupervisionList
+        
+    return retunList
+
+
+
 
 today = date.today()
 print("Today's date:", today)
 
-watchlist=["TMV.DE","AAPL","HEIA.AS","SHL.DE","VOS.DE","GE","SKT","JNJ","AVGO","SW1.F","SLT.DE","ASL.de"]
-
-mySupervisionList=["2338.HK","AAG.DE","BIDU","BMW.DE","BAYN.DE","COK.DE","CSCO","EVD.DE","FEV.DE","HAG.F","IRBT","JD","MTX.DE","N7G.DE","PRLB","SHL.DE","SIX2.DE","SLM","TCOM","TUI1.DE","VOW3.DE"]
 failList=[]
 RSL_List=[]
 trendIndicatorList=[]
@@ -67,7 +76,10 @@ mdf=pd.DataFrame()
 stockNameList=[]
 
 
-mySupervisionList=watchlist+mySupervisionList
+
+
+
+mySupervisionList=get_my_list()
 
 try:
     os.mkdir("save//pics//"+str(today))
