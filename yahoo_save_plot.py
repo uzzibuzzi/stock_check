@@ -52,7 +52,10 @@ def get_limits(tickerName,allStockLimits):
     cleanedList = [x for x in ListOfLimits[0] if x > 0]
     return cleanedList
 
+
+#generate a list of stock for supervision
 def get_my_list():
+    #if file is available or take the stored data here
     try:
         returnList=pd.read_csv("myChecklist.csv",header= None)
         returnList=returnList.iloc[0].to_list()
@@ -63,7 +66,6 @@ def get_my_list():
         returnList=watchlist+mySupervisionList
         
     return returnList
-
 
 
 
@@ -141,10 +143,11 @@ for i in range(len(mySupervisionList)):
 
 
 mdf=pd.DataFrame({"mySupervisionList":stockNameList,"RSL_List":RSL_List,"trendIndicator":trendIndicatorList}) 
-mdf=mdf.sort_values(by=['RSL_List']).head()
+mdf=mdf.sort_values(by=['RSL_List'])
 mdf.to_csv("save//files//"+str(today)+"Result_"+str(today)+".csv")
 
-abc=pd.read_csv()
+
 
 print(mdf.sort_values(by=['RSL_List']).head())
 print(mdf.sort_values(by=['RSL_List']).tail())
+
