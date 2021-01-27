@@ -10,7 +10,6 @@ import numpy as np
 import matplotlib.dates as mdates
 
 from mpl_finance import candlestick_ohlc
-
 from datetime import date
 
 # creates rolling means acoring the list sind back string for positive or neagtive trend
@@ -55,13 +54,15 @@ def get_limits(tickerName,allStockLimits):
 
 def get_my_list():
     try:
-        retunList=pd.read_csv=("stock_check//myChecklist.txt")
+        returnList=pd.read_csv("myChecklist.csv",header= None)
+        returnList=returnList.iloc[0].to_list()
+    
     except:    
         watchlist=["TMV.DE","AAPL","HEIA.AS","SHL.DE","VOS.DE","GE","SKT","JNJ","AVGO","SW1.F","SLT.DE","ASL.de"]
         mySupervisionList=["2338.HK","AAG.DE","BIDU","BMW.DE","BAYN.DE","COK.DE","CSCO","EVD.DE","FEV.DE","HAG.F","IRBT","JD","MTX.DE","N7G.DE","PRLB","SHL.DE","SIX2.DE","SLM","TCOM","TUI1.DE","VOW3.DE"]
-        retunList=watchlist+mySupervisionList
+        returnList=watchlist+mySupervisionList
         
-    return retunList
+    return returnList
 
 
 
@@ -80,6 +81,7 @@ stockNameList=[]
 
 
 mySupervisionList=get_my_list()
+print(mySupervisionList)
 
 try:
     os.mkdir("save//pics//"+str(today))
@@ -138,10 +140,11 @@ for i in range(len(mySupervisionList)):
     
 
 
-
 mdf=pd.DataFrame({"mySupervisionList":stockNameList,"RSL_List":RSL_List,"trendIndicator":trendIndicatorList}) 
+mdf=mdf.sort_values(by=['RSL_List']).head()
 mdf.to_csv("save//files//"+str(today)+"Result_"+str(today)+".csv")
 
-print(mdf)
- # mit dem ersetzen Datafram list ticker symbol und namen
-#mdf['Name'] = np.where((mdf.WKN == 'BAY001'),'XXX',mdf.Name)
+abc=pd.read_csv()
+
+print(mdf.sort_values(by=['RSL_List']).head())
+print(mdf.sort_values(by=['RSL_List']).tail())
