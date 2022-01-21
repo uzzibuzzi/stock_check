@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 18 21:38:17 2021
+
+@author: Achims_tab
+"""
+
+
+wokrink on:
+
+write KGV in result sheet
+make sheet with industry secto
+    compare to sector ETF
+
+
+cleaning architekt 
+make one DF struct for limits moving averagres...
+        abc["Adj Close"]=df_100ma
+        use the lib
+make it in a class
+
+
+todo:
+
+
+replace "A","B" with dynamic dict index to dict to A
+make main small
+watchlist
+add signal detection
+find ma 10 value and derivative
+
+signal for watchlist

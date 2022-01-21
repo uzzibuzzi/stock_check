@@ -1,0 +1,30 @@
+Alibaba Group Holding Limited		142.29	fixed Limit
+Baidu, Inc.		138.10374870300294	trailing Limit
+CureVac N.V.		37.315002	fixed Limit
+CureVac N.V.		19.078250551223753	trailing Limit
+None		10.78650004863739	trailing Limit
+JD.com, Inc.		61.7	trailing Limit
+Ping An Insurance (Group) Company of China, Ltd.		54.2300009727478	trailing Limit
+SoftBank Group Corp.		20.459499740600585	trailing Limit
+Trip.com Group Limited		27.37	fixed Limit
+Trip.com Group Limited		20.103999328613284	trailing Limit
+Volkswagen AG		152.93599853515624	trailing Limit
+Weichai Power Co., Ltd.		11.947499871253967	trailing Limit
+Xiaomi Corporation		15.869500064849854	trailing Limit
+Sportradar Group AG		10.807999801635743	trailing Limit
+*********		2022-01-21	*******************
+
+Alibaba Group Holding Limited		142.29	fixed Limit
+Baidu, Inc.		138.10374870300294	trailing Limit
+CureVac N.V.		37.315002	fixed Limit
+CureVac N.V.		19.078250551223753	trailing Limit
+None		10.78650004863739	trailing Limit
+JD.com, Inc.		61.7	trailing Limit
+Ping An Insurance (Group) Company of China, Ltd.		54.2300009727478	trailing Limit
+SoftBank Group Corp.		20.459499740600585	trailing Limit
+Trip.com Group Limited		27.37	fixed Limit
+Trip.com Group Limited		20.103999328613284	trailing Limit
+Volkswagen AG		152.93599853515624	trailing Limit
+Weichai Power Co., Ltd.		11.947499871253967	trailing Limit
+Xiaomi Corporation		15.869500064849854	trailing Limit
+Sportradar Group AG		10.807999801635743	trailing Limit

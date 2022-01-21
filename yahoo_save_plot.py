@@ -27,20 +27,24 @@ def fastAnalyse(series):
 
 
 def get_Data_yahoo(ticker):
-        tickerSymbol=ticker
-        try:
-            msft = yf.Ticker(tickerSymbol)
-            stockinfo=msft.info
-            stockName=str(stockinfo.get("longName"))  
-        except:
-            stockName=str(mySupervisionList[i]).split(".")[0]
-            print("failed Ticker",mySupervisionList[i])
-        try:
-            df = yf.download(tickerSymbol, start="2020-02-01", end=today)    
-        except:
-            failList.append(mySupervisionList[i])
-            print("failed download",mySupervisionList[i])
-        return stockName, df   
+    global failList
+    global i
+    newDF=pd.DataFrame()
+    tickerSymbol=ticker
+    try:
+        msft = yf.Ticker(tickerSymbol)
+        stockinfo=msft.info
+        stockName=str(stockinfo.get("longName"))  
+    except:
+        stockName=str(mySupervisionList[i]).split(".")[0]
+        print("failed Ticker",mySupervisionList[i])
+    try:
+        newDF = yf.download(tickerSymbol, start="2020-02-01", end=today)    
+    except:
+        failList.append(mySupervisionList[i])
+        print("failed download",mySupervisionList[i])
+    print("stockName")    
+    return stockName, newDF   
 
 
 # return a list of limits froma requestest ticker -> add the same for name
@@ -137,7 +141,7 @@ for i in range(len(mySupervisionList)):
         ax1.annotate(str(df["Adj Close"][-1])[:6],xy=(0.8, 0.9), xycoords='axes fraction')
         ax2.plot(df_dx.index.map(mdates.date2num),df_dx.values) 
         plt.savefig("save//pics//"+str(today)+"//"+str(stockName).split(".")[0]+str(today), dpi=800)
-        # plt.show()
+        plt.show()
 
     
 
@@ -150,4 +154,24 @@ mdf.to_csv("save//files//"+str(today)+"Result_"+str(today)+".csv")
 
 print(mdf.sort_values(by=['RSL_List']).head())
 print(mdf.sort_values(by=['RSL_List']).tail())
+
+
+
+
+
+
+
+
+i=1
+
+df=pd.DataFrame()
+
+
+stockName,df = get_Data_yahoo(mySupervisionList[i])   
+
+all_limits=get_limits("Apple Inc",pd.read_csv("myStockLimits.csv"))
+
+
+
+
 
