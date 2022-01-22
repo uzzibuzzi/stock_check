@@ -2,7 +2,6 @@ import yfinance as yf
 import os
 
 import matplotlib.pyplot as plt
-import seaborn
 import pandas as pd
 import math
 import mpl_finance
@@ -292,12 +291,9 @@ abc.load_list_from_xls(file,"TestList")
 allSheets=abc.getSheets()
 
 print("choose onen´of the sheets")
-for each in range(len(allSheets)):
-    print("nr {}.  foor sheet name {}".format(each,allSheets[each]))
-noOfSheet=int(input("press"))
-print(allSheets[noOfSheet])
-if (noOfSheet< len(allSheets)): 
-    abc.load_list_from_xls(file,allSheets[noOfSheet])
+for eachsheet in range(len(allSheets)-1):
+    print("nr {}.  foor sheet name {}".format(eachsheet,allSheets[eachsheet]))
+    abc.load_list_from_xls(file,allSheets[eachsheet])
 
 
 #sheeList=abc.sheetnames
@@ -352,7 +348,7 @@ for i in range(len(mySupervisionList)):
         fixedLimits=findLimits()            # macht limit aus festen weerten aus dem xls
         moving_alarm_value(abc,df)          # macht ein trailing limit
         
-        abc.wb.save("save//files//"+str(today)+"Result_"+str(allSheets[noOfSheet])+str(today)+".xlsx")
+        abc.wb.save("save//files//"+str(today)+"Result_"+str(allSheets[eachsheet])+str(today)+".xlsx")
 
 
 

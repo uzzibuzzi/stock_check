@@ -8,12 +8,14 @@ Created on Mon Oct 18 21:38:17 2021
 
 wokrink on:
 
+cleaning architekt 
+
 write KGV in result sheet
 make sheet with industry secto
     compare to sector ETF
 
 
-cleaning architekt 
+
 make one DF struct for limits moving averagres...
         abc["Adj Close"]=df_100ma
         use the lib
