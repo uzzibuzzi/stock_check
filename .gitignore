@@ -1,2 +1,10 @@
 #ignore folder will see
 save/
+convert_model.tflite
+yahoo_save_plot.py
+*.ipynb
+whats.py
+black_scholes.py
+ClassOrderBookLimits.py
+LimitCheck_save.xlsx
+Test_limit.xlsx

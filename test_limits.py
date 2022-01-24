@@ -295,7 +295,7 @@ for eachsheet in range(len(allSheets)-1):
     print("nr {}.  foor sheet name {}".format(eachsheet,allSheets[eachsheet]))
     abc.load_list_from_xls(file,allSheets[eachsheet])
 
-
+eachsheet=0
 #sheeList=abc.sheetnames
 backlook=200
 
