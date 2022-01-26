@@ -3,3 +3,20 @@
   last run2022-01-23 
   last run2022-01-23 
   last run2022-01-23 
+*********		2022-01-26	*******************
+
+*********		2022-01-26	*******************
+
+*********		2022-01-26	*******************
+
+*********		2022-01-26	*******************
+
+Chewy, Inc.		44.81679870605469	trailing Limit
+Peloton Interactive, Inc.		30.285650873184206	trailing Limit
+Exasol AG		7.085000000000001	trailing Limit
+JD.com, Inc.		77.62435016632081	trailing Limit
+Trip.com Group Limited		27.582449293136598	trailing Limit
+JD.com, Inc.		302.72400329589846	trailing Limit
+Alibaba Group Holding Limited		122.43000240325928	trailing Limit
+Bayer Aktiengesellschaft		53.11424903869629	trailing Limit
+BioNTech SE		164.8368782043457	trailing Limit

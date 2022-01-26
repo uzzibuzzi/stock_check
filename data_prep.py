@@ -34,7 +34,31 @@ class stockHandling:
             return False,False
         return stockName, newDF 
     
+
+
+def plot_bollinger(DF):
+    """ it plots bollinger from a DF "value"
+    """
+    mdf=pd.DataFrame()
+    mdf["value"]=DF
+    mdf=mdf.dropna()
+    mdf["max"]=mdf["value"].rolling(10).max()
+    mdf["min"]=mdf["value"].rolling(10).min()
+    mdf['TP'] = (mdf['value'] + mdf['max'] + mdf['min'])/3
+    mdf['MA-TP'] = mdf['TP'].rolling(4).mean()
+    mdf['stdw'] = mdf['TP'].rolling(10).std(ddof=1)
+    mdf['mean_max'] = mdf['MA-TP']+ 4*mdf['stdw']
+    mdf['mean_min'] = mdf['MA-TP'] - 4*mdf['stdw']
     
+    # Plotting it all together
+    ax = mdf[['value', 'mean_max', 'mean_min']].plot(color=['blue', 'orange', 'yellow'])
+    ax.fill_between(mdf.index, mdf['mean_max'], mdf['mean_min'], facecolor='orange', alpha=0.3)
+    ax.set_xlim([today-datetime.timedelta(70), today])
+    plt.show()
+    
+
+
+
     
 if __name__ == "__main__":
     dat=stockHandling()

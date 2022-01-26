@@ -182,6 +182,7 @@ def findLimits():
         fixedLimits.append(threshold)
         # paint cell with limits
         if (threshold > stockPrice):
+            print("+++++++++++fixes treshold exxceds ****************++++++++++++++++")
             print("check out {} level {}".format(stockName,threshold))
             abc.ws[str(each)+str(i+2)].fill = redFill
             make_log(stockName,threshold, "fixed Limit")
@@ -234,6 +235,8 @@ def moving_alarm_value(xlsSheet,df):
             df["trailing_limit"]=limitList
             if (limit_old < df.iloc[-1].Open) :
                 abc.ws[str("I")+str(i+2)].fill = redFill
+                make_log(stockName,limit, "trailing Limit")
+                print("++++++++++++++######## trailing Alarm  ##############++++++++++++++++")
             if (limit_old > df.iloc[-1].Open):
                 abc.ws[str("I")+str(i+2)].fill = greenFill            
             
@@ -241,8 +244,7 @@ def moving_alarm_value(xlsSheet,df):
             
         if start_value <0:    
             limit_old=(((trailingDF.iloc[0].Close+trailingDF.iloc[0].Open)/2)*(1-(abs(start_value)/100)))
-            print("trailing loss limit")
-
+            
             for index, values in trailingDF.iterrows():
                 try:
                     limit=(float((values.Open+values.Close))/2)*(1-(abs(start_value)/100))
@@ -256,6 +258,7 @@ def moving_alarm_value(xlsSheet,df):
             if (limit_old > df.iloc[-1].Open) :
                 abc.ws[str("I")+str(i+2)].fill = redFill
                 make_log(stockName,limit, "trailing Limit")
+                print("++++++++++++++######## trailing Alarm  ##############++++++++++++++++")
             if (limit_old < df.iloc[-1].Open):
                 abc.ws[str("I")+str(i+2)].fill = greenFill            
     
@@ -381,29 +384,9 @@ for i in range(len(mySupervisionList)):
         ax1.set_xlim([today-datetime.timedelta(backlook), today])
         ax2.set_xlim([today-datetime.timedelta(backlook), today])
         #plt.legend()
-        plt.show()
+       # plt.show()
 
 
 
-def plot_bollinger(DF):
-    mdf=pd.DataFrame()
-    mdf["value"]=DF
-    mdf=mdf.dropna()
-    mdf["max"]=mdf["value"].rolling(10).max()
-    mdf["min"]=mdf["value"].rolling(10).min()
-    mdf['TP'] = (mdf['value'] + mdf['max'] + mdf['min'])/3
-    mdf['MA-TP'] = mdf['TP'].rolling(4).mean()
-    mdf['stdw'] = mdf['TP'].rolling(10).std(ddof=1)
-    mdf['mean_max'] = mdf['MA-TP']+ 4*mdf['stdw']
-    mdf['mean_min'] = mdf['MA-TP'] - 4*mdf['stdw']
-    
-    # Plotting it all together
-    ax = mdf[['value', 'mean_max', 'mean_min']].plot(color=['blue', 'orange', 'yellow'])
-    ax.fill_between(mdf.index, mdf['mean_max'], mdf['mean_min'], facecolor='orange', alpha=0.3)
-    ax.set_xlim([today-datetime.timedelta(70), today])
-    plt.show()
-    
-    
-#plot_bollinger(df["20ma"])
 
 
