@@ -20,3 +20,36 @@ JD.com, Inc.		302.72400329589846	trailing Limit
 Alibaba Group Holding Limited		122.43000240325928	trailing Limit
 Bayer Aktiengesellschaft		53.11424903869629	trailing Limit
 BioNTech SE		164.8368782043457	trailing Limit
+*********		2022-01-26	*******************
+
+Chewy, Inc.		44.81679870605469	trailing Limit
+*********		2022-01-26	*******************
+
+*********		2022-01-26	*******************
+
+TeamViewer AG		12.698224749565124	trailing Limit
+Bayer Aktiengesellschaft		53.11424903869629	trailing Limit
+Delta Air Lines, Inc.		41.92100067138672	trailing Limit
+American Airlines Group Inc.		10000.0	fixed Limit
+American Airlines Group Inc.		22.75699882507324	trailing Limit
+*********	2022-01-26	*******************
+	
+TeamViewer AG	12.698224749565124	trailing Limit	
+Bayer Aktiengesellschaft	53.11424903869629	trailing Limit	
+Delta Air Lines, Inc.	41.92100067138672	trailing Limit	
+American Airlines Group Inc.	10000.0	fixed Limit	
+American Airlines Group Inc.	22.75699882507324	trailing Limit	
+*********	2022-01-26	*******************
+	
+TeamViewer AG	12.70	trailing Limit	
+Bayer Aktiengesellschaft	53.11	trailing Limit	
+Delta Air Lines, Inc.	41.92	trailing Limit	
+American Airlines Group Inc.	10000.00	fixed Limit	
+American Airlines Group Inc.	22.76	trailing Limit	
+*********	2022-01-26	*******************
+	
+TeamViewer AG	12.70	trailing Limit	last Value	12.65	
+Bayer Aktiengesellschaft	53.11	trailing Limit	last Value	50.35	
+Delta Air Lines, Inc.	41.92	trailing Limit	last Value	37.50	
+American Airlines Group Inc.	10000.00	fixed Limit	last Value	16.05	
+American Airlines Group Inc.	22.76	trailing Limit	last Value	16.05	

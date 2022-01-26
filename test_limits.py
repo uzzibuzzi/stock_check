@@ -167,9 +167,13 @@ def draw_limits(all_limits):
         # dyn in day line
         ax1.axhline(y=all_limits.loc[count,"Last Days Limit"], color='g', linestyle='-')    
 
-def make_log(name,value, typeOfTrigger):
+def make_log(*argv):
     file1 = open("Mylogfile.txt","a")
-    file1.write(str(name)+"\t\t"+str(value)+"\t"+str(typeOfTrigger)+"\n")
+    writeString=""
+    for all in argv:
+        writeString+=str(all)+"\t"
+    writeString+="\n"
+    file1.write(writeString)
     file1.close()
 
 
@@ -185,7 +189,7 @@ def findLimits():
             print("+++++++++++fixes treshold exxceds ****************++++++++++++++++")
             print("check out {} level {}".format(stockName,threshold))
             abc.ws[str(each)+str(i+2)].fill = redFill
-            make_log(stockName,threshold, "fixed Limit")
+            make_log(stockName,"{:.2f}".format(threshold), "fixed Limit","last Value","{:.2f}".format(df.iloc[-1].Open))
         if (threshold < stockPrice):
             abc.ws[str(each)+str(i+2)].fill = greenFill
     
@@ -210,7 +214,6 @@ def moving_alarm_value(xlsSheet,df):
     start_date=abc.ws["I"+str(i+2)].value
     start_value=abc.ws["H"+str(i+2)].value
     if (start_date is not None):
-        print("found dynmaik limit")
         try:
             trailingDF=df.loc[df.index > start_date ]
         except:
@@ -235,7 +238,7 @@ def moving_alarm_value(xlsSheet,df):
             df["trailing_limit"]=limitList
             if (limit_old < df.iloc[-1].Open) :
                 abc.ws[str("I")+str(i+2)].fill = redFill
-                make_log(stockName,limit, "trailing Limit")
+                make_log(stockName,"{:.2f}".format(limit), "trailing Limit","last Value","{:.2f}".format(df.iloc[-1].Open))
                 print("++++++++++++++######## trailing Alarm  ##############++++++++++++++++")
             if (limit_old > df.iloc[-1].Open):
                 abc.ws[str("I")+str(i+2)].fill = greenFill            
@@ -257,7 +260,7 @@ def moving_alarm_value(xlsSheet,df):
             df["trailing_limit"]=limitList
             if (limit_old > df.iloc[-1].Open) :
                 abc.ws[str("I")+str(i+2)].fill = redFill
-                make_log(stockName,limit, "trailing Limit")
+                make_log(stockName,"{:.2f}".format(limit), "trailing Limit","last Value","{:.2f}".format(df.iloc[-1].Open))
                 print("++++++++++++++######## trailing Alarm  ##############++++++++++++++++")
             if (limit_old < df.iloc[-1].Open):
                 abc.ws[str("I")+str(i+2)].fill = greenFill            
@@ -267,7 +270,7 @@ def moving_alarm_value(xlsSheet,df):
     
 
 
-##main
+# main
 
 
 
@@ -276,16 +279,10 @@ RSL_List=[]
 trendIndicatorList=[]
 mdf=pd.DataFrame()
 stockNameList=[]
+backlook=200
 
-
-
-### main
-#import list to check
-#mySupervisionList=get_my_list()
-
-
+folder=os.getcwd()
 file="LimitCheck.xlsx"
-#file="Test_limit.xlsx"
 
 
 abc=xls_handling()
@@ -294,13 +291,13 @@ abc.load_list_from_xls(file,"TestList")
 allSheets=abc.getSheets()
 
 print("choose onen´of the sheets")
-for eachsheet in range(len(allSheets)-1):
+for eachsheet in range(len(allSheets)):
     print("nr {}.  foor sheet name {}".format(eachsheet,allSheets[eachsheet]))
     abc.load_list_from_xls(file,allSheets[eachsheet])
 
-eachsheet=0
-#sheeList=abc.sheetnames
-backlook=200
+
+
+
 
 mySupervisionList=abc.getKeys(0)
 
