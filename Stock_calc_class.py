@@ -25,9 +25,9 @@ class AnalyseStock:
         self.backlooklength= HistoryLength
 
         
-    def pullData(self,ticker):
+    def pullData(self):
         try:
-            self.msft = yf.Ticker(ticker)
+            self.msft = yf.Ticker(self.ticker)
             self.stockinfo=self.msft.info
             self.stockName=str(self.stockinfo.get("longName"))  
         except:
