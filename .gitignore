@@ -1,6 +1,7 @@
 #ignore folder will see
 save/
 convert_model.tflite
+Mylogfile.txt
 yahoo_save_plot.py
 *.ipynb
 whats.py
