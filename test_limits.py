@@ -283,10 +283,7 @@ backlook=200
 
 folder=os.getcwd()
 file="LimitCheck.xlsx"
-print("imported stocks from xls: ", mySupervisionList)
-
 today=createTodaysFolders()
-
 make_log("*********",str(today), "*******************\n")
 
 
@@ -300,7 +297,7 @@ for eachsheet in range(len(allSheets)):
     print("nr {}.  foor sheet name {}".format(eachsheet,allSheets[eachsheet]))
     abc.load_list_from_xls(file,allSheets[eachsheet])    
     mySupervisionList=abc.getKeys(0)
-        
+    print("imported stocks from xls: ", mySupervisionList)    
     for i in range(len(mySupervisionList)):   
         stockName,df = get_Data_yahoo(mySupervisionList[i])   
         print(stockName)

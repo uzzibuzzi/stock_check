@@ -53,3 +53,6 @@ Bayer Aktiengesellschaft	53.11	trailing Limit	last Value	50.35
 Delta Air Lines, Inc.	41.92	trailing Limit	last Value	37.50	
 American Airlines Group Inc.	10000.00	fixed Limit	last Value	16.05	
 American Airlines Group Inc.	22.76	trailing Limit	last Value	16.05	
+*********	2022-01-28	*******************
+	
+Baidu, Inc.	123.99	trailing Limit	last Value	148.01	
