@@ -17,11 +17,15 @@ class AnalyseStock:
         self.backlooklength= "2020-02-01"
         self.today = date.today()
         self.newDF=pd.DataFrame()
-    def changeBackLook(HistoryLength):
+        self.stockName=""
+        self.msft=""
+        self.stockinfo=""
+        
+    def changeBackLook(self,HistoryLength):
         self.backlooklength= HistoryLength
 
         
-    def pullData(ticker):
+    def pullData(self,ticker):
         try:
             self.msft = yf.Ticker(ticker)
             self.stockinfo=self.msft.info
@@ -30,15 +34,16 @@ class AnalyseStock:
              self.stockName=str(ticker)
              print("failed Ticker",ticker)
         try:
-             newDF = yf.download( self.ticker, start=self.backlooklength, end=self.today)    
+             self.newDF = yf.download( self.ticker, start=self.backlooklength, end=self.today)    
         except:
-             print("failed download",mySupervisionList[i])
+             print("failed download",ticker)
         
-        print(stockName) 
+        print(self.stockName) 
         print(self.newDF.describe())  
         
         
 abc=AnalyseStock("TMV.DE")
+abc.changeBackLook("45")
 abc.pullData()
         
         
