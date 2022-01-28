@@ -296,82 +296,81 @@ print("choose onen´of the sheets")
 for eachsheet in range(len(allSheets)):
     print("nr {}.  foor sheet name {}".format(eachsheet,allSheets[eachsheet]))
 
-eachsheet=2 
-abc.load_list_from_xls(file,allSheets[eachsheet])    
-mySupervisionList=abc.getKeys(0)
-print("imported stocks from xls: ", mySupervisionList)    
-for i in range(len(mySupervisionList)):   
-    stockName,df = get_Data_yahoo(mySupervisionList[i])   
-    print(stockName)
-    abc.ws["B"+str(i+2)]=stockName
+    abc.load_list_from_xls(file,allSheets[eachsheet])    
+    mySupervisionList=abc.getKeys(0)
+    print("imported stocks from xls: ", mySupervisionList)    
+    for i in range(len(mySupervisionList)):   
+        stockName,df = get_Data_yahoo(mySupervisionList[i])   
+        print(stockName)
+        abc.ws["B"+str(i+2)]=stockName
+        
+        
+        # hier was rein if df is epmty pass passiert bei download und empty df
+        if (len(df) <1):
+            print("hier war ein Yahoo Download Fehler",mySupervisionList[i])
+            
+        else:
+            df, df_ohlc,df_Volume,df_ohlc_1d=makeCandles(df)
+            RSL=df["Adj Close"].rolling(window=3).mean()/df["Adj Close"].rolling(window=5*26).mean()
+            RSL_List.append(RSL[-1])
+            # fast analyse + - over averages 2,5,25,96,200,500
+            trendIndicator=fastAnalyse(df["Adj Close"])
+            trendIndicatorList.append(trendIndicator)
+            stockNameList.append(str(stockName))
+            # chang this to relative not absulute
+            abc.ws["B"+str(i+2)]=stockName     #Full Name
+            abc.ws["C"+str(i+2)]=trendIndicator#TrendIndikator
+            abc.ws["D"+str(i+2)]=str(RSL[-1])[:4]#RSL
+            # mark RSI in red and green
+            if (float(abc.ws["D"+str(i+2)].value) < 0.9):
+                abc.ws["D"+str(i+2)].fill = redFill
+            if (float(abc.ws["D"+str(i+2)].value) >= 1.1):
+                abc.ws["D"+str(i+2)].fill = greenFill
+            
+            abc.ws["E"+str(i+2)]=df_ohlc_1d.iloc[-1,1]#last value
+    
+            checkSignals()       # soll für signal trigger was werden 
+            
+            
+            fixedLimits=findLimits()            # macht limit aus festen weerten aus dem xls
+            moving_alarm_value(abc,df)          # macht ein trailing limit
+            
+            abc.wb.save("save//files//"+str(today)+"Result_"+str(allSheets[eachsheet])+str(today)+".xlsx")
     
     
-    # hier was rein if df is epmty pass passiert bei download und empty df
-    if (len(df) <1):
-        print("hier war ein Yahoo Download Fehler",mySupervisionList[i])
-        
-    else:
-        df, df_ohlc,df_Volume,df_ohlc_1d=makeCandles(df)
-        RSL=df["Adj Close"].rolling(window=3).mean()/df["Adj Close"].rolling(window=5*26).mean()
-        RSL_List.append(RSL[-1])
-        # fast analyse + - over averages 2,5,25,96,200,500
-        trendIndicator=fastAnalyse(df["Adj Close"])
-        trendIndicatorList.append(trendIndicator)
-        stockNameList.append(str(stockName))
-        # chang this to relative not absulute
-        abc.ws["B"+str(i+2)]=stockName     #Full Name
-        abc.ws["C"+str(i+2)]=trendIndicator#TrendIndikator
-        abc.ws["D"+str(i+2)]=str(RSL[-1])[:4]#RSL
-        # mark RSI in red and green
-        if (float(abc.ws["D"+str(i+2)].value) < 0.9):
-            abc.ws["D"+str(i+2)].fill = redFill
-        if (float(abc.ws["D"+str(i+2)].value) >= 1.1):
-            abc.ws["D"+str(i+2)].fill = greenFill
-        
-        abc.ws["E"+str(i+2)]=df_ohlc_1d.iloc[-1,1]#last value
-
-        checkSignals()       # soll für signal trigger was werden 
-        
-        
-        fixedLimits=findLimits()            # macht limit aus festen weerten aus dem xls
-        moving_alarm_value(abc,df)          # macht ein trailing limit
-        
-        abc.wb.save("save//files//"+str(today)+"Result_"+str(allSheets[eachsheet])+str(today)+".xlsx")
-
-
-
-        #start plottting
-        # make limit lines    
-        ax1=plt.subplot2grid((6,1),(0,0),rowspan=5,colspan=1)
-        if len(fixedLimits)!=False:
-            # draw_limits(all_limit_values)
-            for count in fixedLimits:  
-                # fixed limit line
-                if count!= None :
-                    ax1.axhline(y=count, color='r', linestyle='-') 
-                
-        # plot picture
-        plt.title(str(stockName)+" RSL : "+str(RSL[-1])[:4]+trendIndicator)
-        ax2=plt.subplot2grid((6,1),(5,0),rowspan=5,colspan=1,sharex=ax1)
-        ax1.xaxis_date()
-        candlestick_ohlc(ax1,df_ohlc.values,width=2,colorup="g")
-        ax1.plot(df.index.map(mdates.date2num),df["100ma"],label="100ma")
-        ax1.plot(df.index.map(mdates.date2num),df["20ma"],label="20ma")
-        if "trailing_limit" in df.keys():
-            ax1.plot(df.index.map(mdates.date2num),df["trailing_limit"],label='trailing_loss',c="green",linewidth=4)
-        
-        ax2.fill_between(df_Volume.index.map(mdates.date2num), df_Volume.values,0)
-        ax1.annotate(str(df["Adj Close"][-1])[:6],xy=(0.8, 0.9), xycoords='axes fraction')
-        ax2.plot(df.index.map(mdates.date2num),df["df_dx"]) 
-        ax1.set_xlim([today-0.3*datetime.timedelta(backlook), today])
-        ax2.set_xlim([today-0.3*datetime.timedelta(backlook), today])
-        plt.savefig("save//pics//"+str(today)+"//"+str(stockName).split(".")[0]+str(today), dpi=800)
-        ax1.set_xlim([today-datetime.timedelta(backlook), today])
-        ax2.set_xlim([today-datetime.timedelta(backlook), today])
-        #plt.legend()
-        # plt.show()
-
-
-
-
-
+    
+            #start plottting
+            # make limit lines    
+            ax1=plt.subplot2grid((6,1),(0,0),rowspan=5,colspan=1)
+            if len(fixedLimits)!=False:
+                # draw_limits(all_limit_values)
+                for count in fixedLimits:  
+                    # fixed limit line
+                    if count!= None :
+                        ax1.axhline(y=count, color='r', linestyle='-') 
+                    
+            # plot picture
+            plt.title(str(stockName)+" RSL : "+str(RSL[-1])[:4]+trendIndicator)
+            ax2=plt.subplot2grid((6,1),(5,0),rowspan=5,colspan=1,sharex=ax1)
+            ax1.xaxis_date()
+            candlestick_ohlc(ax1,df_ohlc.values,width=2,colorup="g")
+            ax1.plot(df.index.map(mdates.date2num),df["100ma"],label="100ma")
+            ax1.plot(df.index.map(mdates.date2num),df["20ma"],label="20ma")
+            if "trailing_limit" in df.keys():
+                ax1.plot(df.index.map(mdates.date2num),df["trailing_limit"],label='trailing_loss',c="green",linewidth=4)
+            
+            ax2.fill_between(df_Volume.index.map(mdates.date2num), df_Volume.values,0)
+            ax1.annotate(str(df["Adj Close"][-1])[:6],xy=(0.8, 0.9), xycoords='axes fraction')
+            ax2.plot(df.index.map(mdates.date2num),df["df_dx"]) 
+            ax1.set_xlim([today-0.3*datetime.timedelta(backlook), today])
+            ax2.set_xlim([today-0.3*datetime.timedelta(backlook), today])
+            plt.savefig("save//pics//"+str(today)+"//"+str(stockName).split(".")[0]+str(today), dpi=800)
+            ax1.set_xlim([today-datetime.timedelta(backlook), today])
+            ax2.set_xlim([today-datetime.timedelta(backlook), today])
+            #plt.legend()
+            # plt.show()
+    
+    
+    
+    
+    
