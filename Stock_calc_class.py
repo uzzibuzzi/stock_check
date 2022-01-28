@@ -30,8 +30,12 @@ class AnalyseStock:
         
         try:
             self.msft = yf.Ticker(self.ticker)
+            
+            print(self.ticker)
             self.stockinfo=self.msft.info
+            print("info")
             self.stockName=str(self.stockinfo.get("longName"))  
+            print(self.stockinfo.get("longName"))
         except:
              self.stockName=str(self.ticker)
              print("failed Ticker",self.ticker)
