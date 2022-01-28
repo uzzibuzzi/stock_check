@@ -50,7 +50,6 @@ class AnalyseStock:
         
 abc=AnalyseStock("TMV.DE")
 print("init done")
-abc.changeBackLook("45")
 print("change stoc")
 abc.pullData()
         
