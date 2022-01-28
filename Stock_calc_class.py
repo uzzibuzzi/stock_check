@@ -16,20 +16,16 @@ class AnalyseStock:
         self.stockName=""
         self.backlooklength= "2020-02-01"
         self.today = date.today()
-        self.DF=pd.DataFrame()
-        
+        self.newDF=pd.DataFrame()
     def changeBackLook(HistoryLength):
-        
         self.backlooklength= HistoryLength
 
         
     def pullData(ticker):
-        
-        self.newDF=pd.DataFrame()
         try:
             self.msft = yf.Ticker(ticker)
-            self.stockinfo=msft.info
-            self.stockName=str(stockinfo.get("longName"))  
+            self.stockinfo=self.msft.info
+            self.stockName=str(self.stockinfo.get("longName"))  
         except:
              self.stockName=str(ticker)
              print("failed Ticker",ticker)
