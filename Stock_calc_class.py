@@ -42,7 +42,7 @@ class AnalyseStock:
         print(self.newDF.describe())  
         
         
-abc=AnalyseStock("app")
+abc=AnalyseStock("TMV.DE")
 abc.pullData()
         
         
