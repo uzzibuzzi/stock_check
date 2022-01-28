@@ -26,24 +26,28 @@ class AnalyseStock:
 
         
     def pullData(self):
+        print(self.ticker)
+        
         try:
             self.msft = yf.Ticker(self.ticker)
             self.stockinfo=self.msft.info
             self.stockName=str(self.stockinfo.get("longName"))  
         except:
-             self.stockName=str(ticker)
-             print("failed Ticker",ticker)
+             self.stockName=str(self.ticker)
+             print("failed Ticker",self.ticker)
         try:
              self.newDF = yf.download( self.ticker, start=self.backlooklength, end=self.today)    
         except:
-             print("failed download",ticker)
+             print("failed download",self.ticker)
         
         print(self.stockName) 
         print(self.newDF.describe())  
         
         
 abc=AnalyseStock("TMV.DE")
+print("init done")
 abc.changeBackLook("45")
+print("change stoc")
 abc.pullData()
         
         
