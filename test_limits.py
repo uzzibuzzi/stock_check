@@ -368,7 +368,7 @@ for eachsheet in range(len(allSheets)):
             ax1.set_xlim([today-datetime.timedelta(backlook), today])
             ax2.set_xlim([today-datetime.timedelta(backlook), today])
             #plt.legend()
-            # plt.show()
+            #plt.show()
     
     
     
