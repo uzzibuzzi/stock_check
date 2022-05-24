@@ -367,8 +367,8 @@ for eachsheet in range(len(allSheets)):
             plt.savefig("save//pics//"+str(today)+"//"+str(stockName).split(".")[0]+str(today), dpi=800)
             ax1.set_xlim([today-datetime.timedelta(backlook), today])
             ax2.set_xlim([today-datetime.timedelta(backlook), today])
-            #plt.legend()
-            #plt.show()
+            plt.legend()
+            plt.show()
     
     
     

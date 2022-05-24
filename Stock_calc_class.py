@@ -55,8 +55,6 @@ class AnalyseStock:
         + for higer - for lower actual price to moving average
         order is avrg=[2,5,25,96,200,500]
             """
-            
-
         resultstring=[]
         dfNameOfMeans = {
             0: "ma2",
@@ -68,7 +66,7 @@ class AnalyseStock:
         sectorWKN = {
          "Technology": "IITU.L",
          "Utilities": "XDW0.L",
-         "year": 1964
+         "Industrials": 1964
              }
         if segment in sectorWKN.keys() : 
             self=AnalyseStock(str(sectorWKN[str(segment)]))
@@ -97,19 +95,17 @@ class AnalyseStock:
     
 
 
-abc=AnalyseStock("AAPL")
+abc=AnalyseStock("VQT.DE")
 
 abc.pullData()
 
 sector = abc.stockinfo.get("sector")
         
 values=abc.segmentAnalyse(sector)
-print(values)
+make_price():
 
-"""        
-abc.stockinfo.keys()
-
-abc.stockinfo.get("currentPrice")
-sector = abc.stockinfo.get("sector")
-"""
-
+try:
+    aa=abc.stockinfo.get("regularMarketPrice")
+    print(aa)
+except:
+    print("no pirce")
