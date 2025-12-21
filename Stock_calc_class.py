@@ -102,7 +102,7 @@ abc.pullData()
 sector = abc.stockinfo.get("sector")
         
 values=abc.segmentAnalyse(sector)
-make_price():
+make_price()
 
 try:
     aa=abc.stockinfo.get("regularMarketPrice")

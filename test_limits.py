@@ -4,11 +4,11 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 import math
-import mpl_finance
+import mplfinance
 import numpy as np
 import matplotlib.dates as mdates
 
-from mpl_finance import candlestick_ohlc
+from mplfinance.original_flavor import candlestick_ohlc
 from datetime import date
 import datetime
 
@@ -38,8 +38,13 @@ def fastAnalyse(series):
     
     avrg=[2,5,25,96,200,500]
     resultStr=""
+    # Ensure series is a Series, not a DataFrame
+    if isinstance(series, pd.DataFrame):
+        series = series.iloc[:, 0]
+    
     for i in avrg:
-        mean_gradient=series.rolling(window=i).mean().diff()[-1]
+        rolling_mean = series.rolling(window=i).mean()
+        mean_gradient = rolling_mean.diff().iloc[-1] if len(rolling_mean.dropna()) > 1 else 0
         #print(mean_gradient)
         if mean_gradient > 0 :
             resultStr=resultStr + "+"
@@ -140,12 +145,16 @@ def createTodaysFolders():
 
 
 def makeCandles(df):
-    df_ohlc=df["Adj Close"].resample("2D").ohlc()
-    df_ohlc_1d=df["Adj Close"].resample("1D").ohlc()
+    # Use 'Close' if 'Adj Close' doesn't exist
+    price_col = 'Adj Close' if 'Adj Close' in df.columns else 'Close'
+    df_ohlc=df[price_col].resample("2D").ohlc()
+    df_ohlc_1d=df[price_col].resample("1D").ohlc()
     df_Volume = df["Volume"].resample("2D").sum()
-    df["100ma"]=df["Adj Close"].rolling(window=100).mean()
-    df["20ma"]=df["Adj Close"].rolling(window=20).mean()
-    df["df_dx"]=df["Adj Close"]-df["100ma"].rolling(window=50).mean()
+    ma_100 = df[price_col].rolling(window=100).mean()
+    ma_20 = df[price_col].rolling(window=20).mean()
+    df["100ma"]=ma_100
+    df["20ma"]=ma_20
+    df["df_dx"]=df[price_col]-ma_100.rolling(window=50).mean()
     
 
     df_ohlc.reset_index(inplace=True)
@@ -247,16 +256,19 @@ def moving_alarm_value(xlsSheet,df):
             
         if start_value <0:    
             limit_old=(((trailingDF.iloc[0].Close+trailingDF.iloc[0].Open)/2)*(1-(abs(start_value)/100)))
+            limitList = []
             
-            for index, values in trailingDF.iterrows():
+            for index, values in df.iterrows():
                 try:
-                    limit=(float((values.Open+values.Close))/2)*(1-(abs(start_value)/100))
+                    if index in trailingDF.index:
+                        tr_values = trailingDF.loc[index]
+                        limit=(float((tr_values.Open+tr_values.Close))/2)*(1-(abs(start_value)/100))
+                        kurList.append(limit)
+                        if limit>limit_old:
+                            limit_old=limit
+                    limitList.append(limit_old)
                 except:
-                    pass
-                kurList.append(limit)
-                if limit>limit_old:
-                    limit_old=limit
-                limitList.append(limit_old)
+                    limitList.append(limit_old)
             df["trailing_limit"]=limitList
             if (limit_old > df.iloc[-1].Open) :
                 abc.ws[str("I")+str(i+2)].fill = redFill
@@ -311,21 +323,29 @@ for eachsheet in range(len(allSheets)):
             
         else:
             df, df_ohlc,df_Volume,df_ohlc_1d=makeCandles(df)
-            RSL=df["Adj Close"].rolling(window=3).mean()/df["Adj Close"].rolling(window=5*26).mean()
-            RSL_List.append(RSL[-1])
+            price_col = 'Adj Close' if 'Adj Close' in df.columns else 'Close'
+            RSL=df[price_col].rolling(window=3).mean()/df[price_col].rolling(window=5*26).mean()
+            # Get the last valid RSL value
+            rsl_val = RSL.dropna().iloc[-1] if len(RSL.dropna()) > 0 else np.nan
+            RSL_List.append(rsl_val)
             # fast analyse + - over averages 2,5,25,96,200,500
-            trendIndicator=fastAnalyse(df["Adj Close"])
+            price_col = 'Adj Close' if 'Adj Close' in df.columns else 'Close'
+            trendIndicator=fastAnalyse(df[price_col])
             trendIndicatorList.append(trendIndicator)
             stockNameList.append(str(stockName))
             # chang this to relative not absulute
             abc.ws["B"+str(i+2)]=stockName     #Full Name
             abc.ws["C"+str(i+2)]=trendIndicator#TrendIndikator
-            abc.ws["D"+str(i+2)]=str(RSL[-1])[:4]#RSL
+            abc.ws["D"+str(i+2)]=str(rsl_val)[:4]#RSL
             # mark RSI in red and green
-            if (float(abc.ws["D"+str(i+2)].value) < 0.9):
-                abc.ws["D"+str(i+2)].fill = redFill
-            if (float(abc.ws["D"+str(i+2)].value) >= 1.1):
-                abc.ws["D"+str(i+2)].fill = greenFill
+            try:
+                rsl_cell_val = float(abc.ws["D"+str(i+2)].value)
+                if rsl_cell_val < 0.9:
+                    abc.ws["D"+str(i+2)].fill = redFill
+                if rsl_cell_val >= 1.1:
+                    abc.ws["D"+str(i+2)].fill = greenFill
+            except (ValueError, TypeError):
+                pass  # Skip if value can't be converted to float
             
             abc.ws["E"+str(i+2)]=df_ohlc_1d.iloc[-1,1]#last value
     
@@ -360,7 +380,8 @@ for eachsheet in range(len(allSheets)):
                 ax1.plot(df.index.map(mdates.date2num),df["trailing_limit"],label='trailing_loss',c="green",linewidth=4)
             
             ax2.fill_between(df_Volume.index.map(mdates.date2num), df_Volume.values,0)
-            ax1.annotate(str(df["Adj Close"][-1])[:6],xy=(0.8, 0.9), xycoords='axes fraction')
+            price_col = 'Adj Close' if 'Adj Close' in df.columns else 'Close'
+            ax1.annotate(str(df[price_col][-1])[:6],xy=(0.8, 0.9), xycoords='axes fraction')
             ax2.plot(df.index.map(mdates.date2num),df["df_dx"]) 
             ax1.set_xlim([today-0.3*datetime.timedelta(backlook), today])
             ax2.set_xlim([today-0.3*datetime.timedelta(backlook), today])

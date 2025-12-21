@@ -1,0 +1,60 @@
+digraph "test_limits.py Function Call Graph" {
+    rankdir=LR;
+    node [shape=box, style=rounded, color=lightblue];
+    edge [color=gray];
+
+    // Define nodes
+    main [label="MAIN", fillcolor=lightcoral, style="filled,rounded"];
+    createTodaysFolders [label="createTodaysFolders()"];
+    make_log [label="make_log()"];
+    xls_handling [label="xls_handling\n(external)", fillcolor=lightyellow];
+    get_Data_yahoo [label="get_Data_yahoo()"];
+    makeCandles [label="makeCandles()"];
+    fastAnalyse [label="fastAnalyse()"];
+    findLimits [label="findLimits()"];
+    moving_alarm_value [label="moving_alarm_value()"];
+    checkSignals [label="checkSignals()"];
+    find_trigger [label="find_trigger()"];
+    get_my_list [label="get_my_list()"];
+    draw_limits [label="draw_limits()"];
+    yfinance [label="yfinance\n(external)", fillcolor=lightyellow];
+    pandas [label="pandas\n(external)", fillcolor=lightyellow];
+    matplotlib [label="matplotlib\n(external)", fillcolor=lightyellow];
+    candlestick_ohlc [label="candlestick_ohlc\n(external)", fillcolor=lightyellow];
+
+    // Main function calls
+    main -> createTodaysFolders;
+    main -> make_log;
+    main -> xls_handling;
+    main -> get_Data_yahoo [label="loop"];
+    main -> makeCandles [label="loop"];
+    main -> fastAnalyse [label="loop"];
+    main -> findLimits [label="loop"];
+    main -> moving_alarm_value [label="loop"];
+    main -> checkSignals [label="loop"];
+    main -> candlestick_ohlc [label="plot"];
+    main -> matplotlib [label="plotting"];
+
+    // Function dependencies
+    get_Data_yahoo -> yfinance;
+    get_Data_yahoo -> pandas;
+
+    makeCandles -> pandas;
+    makeCandles -> matplotlib;
+
+    fastAnalyse -> pandas;
+
+    findLimits -> make_log;
+
+    moving_alarm_value -> make_log;
+    moving_alarm_value -> pandas;
+
+    // Legend
+    subgraph cluster_legend {
+        label = "Legend";
+        style = "rounded,dotted";
+        node1 [label="Internal Function", fillcolor=lightblue];
+        node2 [label="External Module", fillcolor=lightyellow];
+        node3 [label="Main Entry", fillcolor=lightcoral];
+    }
+}
